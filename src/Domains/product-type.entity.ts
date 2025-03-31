@@ -10,6 +10,9 @@ export class ProductTypeEntity {
     @Column()
     description: string;
 
-    @OneToMany(() => ProductEntity, (productType) => productType.typeProduct)
+    @OneToMany(() => ProductEntity, (productType) => productType.typeProduct, {
+        cascade: ['insert', 'update', 'remove'],
+        orphanedRowAction: "delete"
+    })
     products: ProductEntity[];
 }

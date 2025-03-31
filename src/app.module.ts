@@ -1,47 +1,38 @@
 import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {UserEntity} from 'src/Domains/user.entity';
-import {UserModule} from 'src/Module/user.module';
-import {JwtModule} from "@nestjs/jwt";
 import {APP_GUARD} from "@nestjs/core";
-import {AuthGuard} from "./Guard/AuthGuard";
-import {RolesGuard} from "./Guard/RoleGuard";
-import {ProductModule} from "./Module/product.module";
-import {ProductEntity} from "./Domains/product.entity";
-import {ProductTypeEntity} from "./Domains/product-type.entity";
-import {ProductTypeModule} from "./Module/productType.module";
+import {AuthGuard} from "./common/guard/AuthGuard.guard";
+import {RolesGuard} from "./common/guard/RoleGuard.guard";
+import {ProductModule} from "./modules/product/product.module";
+import {ProductTypeModule} from "./modules/product-type/product-type.module";
+import {ConfigModule} from "@nestjs/config";
+import {CacheModule} from "@nestjs/cache-manager";
+import {JwtModule} from "./modules/jwt/jwt.module";
+import {UserModule} from "./modules/user/user.module";
+import {DatabaseConfigModule} from "./config/database/databaseConfig.module";
+import {JwtConfigModule} from "./config/jwt/jwtConfig.module";
+import {MailerConfigModule} from "./config/mailer/mailerConfig.module";
 
 @Module({
-    imports: [TypeOrmModule.forRoot({
-        type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '123',
-        database: 'nguyenhanhstore',
-        entities: [UserEntity, ProductEntity, ProductTypeEntity],
-        synchronize: true,
-        logging: true,
-        logger: "debug"
-    }),
-        JwtModule.register({
-            global: true,
-            secret: "qpRMndqeDpqvjh39ChuXJmprH57R3yMspe4IFNmQiXcCJD/KwDSDoM6mEc17xz+S",
-            signOptions: {expiresIn: "86400s", algorithm: "HS512"},
-        }),
+    imports: [
+        DatabaseConfigModule,
+        JwtConfigModule,
         UserModule,
         ProductModule,
         ProductTypeModule,
+        JwtModule,
+        ConfigModule.forRoot({isGlobal: true}),
+        MailerConfigModule,
+        CacheModule.register({isGlobal: true})
     ],
-    controllers: [],
     providers: [{
-            provide: APP_GUARD,
-            useClass: AuthGuard,
-        },
+        provide: APP_GUARD,
+        useClass: AuthGuard,
+    },
         {
             provide: APP_GUARD,
             useClass: RolesGuard,
         }
     ],
 })
-export class AppModule {}
+export class AppModule {
+}
