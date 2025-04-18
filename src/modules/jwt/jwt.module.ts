@@ -1,7 +1,7 @@
-import {Module} from '@nestjs/common';
-import {JwtAppService} from "./jwt.service";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {JwtEntity} from "../../Domains/jwt.entity";
+import { Module } from '@nestjs/common';
+import { JwtAppService } from "./jwt.service";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { JwtEntity } from "../../entity/jwt.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([JwtEntity])],

@@ -27,7 +27,10 @@ export enum ExceptionVariable {
 
     PRODUCT_TYPE_NOT_FOUND="Product Type Not Found!",
 
+    PRODUCT_NOT_FOUND="Product Not Found!",
+
     USER_NOT_FOUND="User Not Found!",
+    USER_HAS_NOT_LIKE_PRODUCT="User hasn't liked this product!",
 
     CODE_INVALID="Code invalid!",
 

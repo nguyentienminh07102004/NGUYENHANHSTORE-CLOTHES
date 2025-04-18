@@ -1,4 +1,17 @@
-import {Body, Controller, Get, HttpCode, Inject, Post, Put, Query, Req} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    Inject,
+    Param,
+    ParseUUIDPipe,
+    Post,
+    Put,
+    Query,
+    Req
+} from "@nestjs/common";
 import {Public} from "../../common/decorator/Public.decorator";
 import {ApiResponse} from "@nestjs/swagger";
 import {APIResponse} from "../../DTO/APIResponse.dto";
@@ -10,10 +23,12 @@ import {UserLogin} from "./dto/UserLogin.dto";
 import {UserChangePassword} from "./dto/UserChangePassword.dto";
 import {Roles} from "../../common/decorator/Roles.decorator";
 import {Role} from "../../common/enum/Role.enum";
-import {UserEntity} from "../../Domains/user.entity";
+import {UserEntity} from "../../entity/user.entity";
 import {ParseEmailPipe} from "../../common/pipe/ParseEmailPipe.pipe";
 import {UserForgotPassword} from "./dto/UserForgotPassword.dto";
 import {UserLoginGoogle} from "./dto/UserLoginGoogle.dto";
+import {Request} from "express";
+import {ProductFavouriteEntity} from "../../entity/product-favourite.entity";
 
 @Controller('users')
 export class UserController {
@@ -101,5 +116,42 @@ export class UserController {
             message: "SUCCESS",
             data: jwtResponse
         };
+    }
+
+    @Get('favourites')
+    @HttpCode(200)
+    @Roles(Role.USER)
+    async findAllFavourites(@Req() req: Request) {
+        const productFavourites = await this.userService.findAllProductFavourites(req['user']['sub']);
+        const response: APIResponse<ProductFavouriteEntity[]> = {
+            status: 200,
+            message: "SUCCESS",
+            data: productFavourites
+        };
+        return response;
+    }
+
+    @Post('like-product/:productId')
+    @Roles(Role.USER)
+    @HttpCode(200)
+    async likeProduct(@Req() req: Request, @Param('productId', ParseUUIDPipe) productId: string) {
+        await this.userService.likeProduct(req['user'].sub, productId);
+        const response: APIResponse<null> = {
+            status: 200,
+            message: "SUCCESS"
+        }
+        return response;
+    }
+
+    @Delete('unlike-product/:productId')
+    @HttpCode(200)
+    @Roles(Role.USER)
+    async unlikeProduct(@Req() req: Request, @Param('productId', ParseUUIDPipe) productId: string) {
+        await this.userService.unlikeProduct(req['user'].sub, productId);
+        const response: APIResponse<null> = {
+            status: 200,
+            message: "SUCCESS"
+        }
+        return response;
     }
 }

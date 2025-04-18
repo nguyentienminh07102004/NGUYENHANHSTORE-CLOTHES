@@ -1,5 +1,5 @@
 import {IsNotEmpty, IsNumber, IsPositive, IsUUID} from "class-validator";
-import {Transform} from "class-transformer";
+import {Expose, Transform} from "class-transformer";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class ProductRequest {
@@ -17,5 +17,6 @@ export class ProductRequest {
     price: number;
     @IsUUID()
     @ApiProperty()
+    @Expose({name: "typeProductId"})
     _typeProductId: string;
 }

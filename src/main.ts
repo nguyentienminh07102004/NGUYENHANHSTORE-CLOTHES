@@ -1,8 +1,8 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {BadRequestException, ValidationPipe} from "@nestjs/common";
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import {HttpExceptionFilter} from "./common/filters/HttpExceptionFilter.filter";
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { BadRequestException, ValidationPipe } from "@nestjs/common";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { HttpExceptionFilter } from "./common/filters/HttpExceptionFilter.filter";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -27,6 +27,12 @@ async function bootstrap() {
                     .join(", ")
             })
     }));
+    app.enableCors({
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS",
+        preflightContinue: false,
+        optionsSuccessStatus: 204
+    });
     await app.listen(process.env.PORT ?? 3000);
 }
 

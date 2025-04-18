@@ -1,5 +1,5 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
-import {ProductTypeEntity} from "../../Domains/product-type.entity";
+import {ProductTypeEntity} from "../../entity/product-type.entity";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {ExceptionVariable} from "../../common/filters/HttpExceptionFilter.filter";

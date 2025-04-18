@@ -26,4 +26,4 @@ import {MailerOptions} from "@nestjs-modules/mailer/dist/interfaces/mailer-optio
         })
     })]
 })
-export class MailerConfigModule {}
+export class MailerConfigurationModule {}

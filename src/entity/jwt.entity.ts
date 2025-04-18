@@ -1,5 +1,5 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from "typeorm";
-import {UserEntity} from "./user.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { UserEntity } from "./user.entity";
 
 @Entity("jwts")
 export class JwtEntity {
@@ -7,9 +7,9 @@ export class JwtEntity {
     id: string;
     @Column()
     refreshToken: string;
-    @Column({type: "timestamp"})
+    @Column({ type: "timestamp" })
     expireRefreshToken: Date;
     @ManyToOne(() => UserEntity, (user) => user.jwts)
-    @JoinColumn({name: "email", referencedColumnName: "email"})
+    @JoinColumn({ name: "email", referencedColumnName: "email" })
     user: UserEntity;
 }

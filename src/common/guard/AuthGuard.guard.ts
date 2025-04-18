@@ -35,6 +35,8 @@ export class AuthGuard implements CanActivate {
         if (!payload || !(await this.jwtUserService.findById(payload.jwtId))) {
             throw new UnauthorizedException();
         }
+        const req: Request = context.switchToHttp().getRequest();
+        req['user'] = payload;
         return true;
     }
 }

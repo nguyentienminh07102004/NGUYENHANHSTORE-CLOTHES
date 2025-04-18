@@ -2,7 +2,7 @@ import {Module} from "@nestjs/common";
 import {ProductController} from "./product.controller";
 import {ProductTypeModule} from "../product-type/product-type.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {ProductEntity} from "../../Domains/product.entity";
+import {ProductEntity} from "../../entity/product.entity";
 import {ProductService} from "./product.service";
 
 @Module({
